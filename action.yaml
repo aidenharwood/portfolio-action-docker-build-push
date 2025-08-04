@@ -32,10 +32,13 @@ runs:
   using: 'composite'
   steps:
     - name: Log in to Docker registry
+      shell: bash
       run: echo "${{ inputs.password }}" | docker login ${{ inputs.registry }} -u ${{ inputs.username }} --password-stdin
 
     - name: Build Docker image
-      run: docker build -f ${{ inputs.dockerfile }} -t ${{ inputs.registry }}/${{ inputs.image_name }}:${{ inputs.image_tag }} ${{ inputs.context }}
+      shell: bash
+      run: docker build -f ${{ inputs.dockerfile }} -t ${{ inputs.registry }}/${{ inputs.image_name }} ${{ inputs.context }}
 
     - name: Push Docker image
+      shell: bash
       run: docker push ${{ inputs.registry }}/${{ inputs.image_name }}
