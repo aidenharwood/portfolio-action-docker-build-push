@@ -1,36 +1,38 @@
-name: 'Docker Build/Push'
-description: 'Builds a Docker image and pushes it to a registry'
+name: "Docker Build/Push"
+description: "Builds a Docker image and pushes it to a registry"
 
 inputs:
   push:
-    description: 'Whether to push the image to the registry'
+    description: "Whether to push the image to the registry"
     type: boolean
     required: true
     default: true
   image_name:
-    description: 'Name of the Docker image'
+    description: "Name of the Docker image"
     required: true
   registry:
-    description: 'Docker registry URL'
+    description: "Docker registry URL"
     required: true
   username:
-    description: 'Registry username'
+    description: "Registry username"
     required: true
   password:
-    description: 'Registry password or token'
+    description: "Registry password or token"
     required: true
   dockerfile:
-    description: 'Path to the Dockerfile'
+    description: "Path to the Dockerfile"
     required: false
-    default: 'Dockerfile'
+    default: "Dockerfile"
   context:
-    description: 'Build context'
+    description: "Build context"
     required: false
-    default: '.'
+    default: "."
 
 runs:
-  using: 'composite'
+  using: "composite"
   steps:
+    - uses: actions/checkout@v4
+
     - name: Log in to Docker registry
       shell: bash
       run: echo "${{ inputs.password }}" | docker login ${{ inputs.registry }} -u ${{ inputs.username }} --password-stdin
